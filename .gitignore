@@ -3,3 +3,4 @@ GTAGS
 GPATH
 GSYMS
 *.~undo-tree~
+*~

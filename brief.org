@@ -1,0 +1,42 @@
+#+TITLE: WAF安全模块儿简介
+#+AUTHOR: sqlfocus
+
+本文档系waf安全模块儿的导读入口，从总体上介绍安全模块儿的构成、理念等。
+
+* 简介
+ModSecurity是WAF引擎，它本身没有提供多少防护，必须配置上规则才能越来越
+useful；为此，spiderlabs提供了免费的规则集。
+
+不像IDS等其它防护系统，不依赖于特定的信号特征，它的核心规则可以为WEB中
+的未知威胁提供通用防护。
+
+为了提供通用防护，核心规则使用如下策略：
+   - HTTP protection   :: 违悖HTTP协议和本地自定义策略
+   - 实时黑名单        :: 使用第三方IP信誉库
+   - WEB恶意站点       :: 利用google安全浏览API辨识恶意站点
+   - HTTP拒绝服务保护  :: 抗击HTTP洪水及慢速DOS
+   - 通用web攻击防护   :: 发现通用的web应用安全攻击
+   - 攻击识别          :: 监控僵尸、机器蜘蛛等
+   - AV扫瞄            :: 文件上传时病毒扫瞄
+   - 防护敏感数据      :: 防泄漏
+   - Trojan防护        :: 监控木马
+   - 监控应用          :: 防止错误配置
+   - 监控错误          :: 分析服务器等错误信息
+
+* TODO 核心规则集CRS
+此安全模块儿的核心规则集来自OWASP
+   - [[https://www.owasp.org/index.php/Category:OWASP_ModSecurity_Core_Rule_Set_Project][网站地址]]
+   - [[https://github.com/SpiderLabs/owasp-modsecurity-crs][下载地址]]
+
+也来自trustwave spiderlabs
+   - [[https://www.trustwave.com/modsecurity-rules-support.php][网站地址]]
+   - [[https://ssl.trustwave.com/web-application-firewall][下载地址]]
+
+这些规则被分类为
+   - SQL injection
+   - cross-site scripting
+   - local file include
+   - remote file include
+
+
+
