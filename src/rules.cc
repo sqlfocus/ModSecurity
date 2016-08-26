@@ -122,13 +122,16 @@ Rules::~Rules() {
  *
  */
 int Rules::loadFromUri(const char *uri) {
+    /* 初始化解析引擎 */
     Driver *driver = new Driver();
 
+    /* 解析配置文件 */
     if (driver->parseFile(uri) == false) {
         parserError << driver->parserError.str();
         return -1;
     }
 
+    /* 合并 */
     int rules = this->merge(driver);
     delete driver;
 
@@ -374,6 +377,7 @@ void Rules::dump() {
 
 
 extern "C" Rules *msc_create_rules_set() {
+    /* 创建盛放安全规则的容器 */
     Rules *rules = new Rules();
 
     return rules;
@@ -405,6 +409,7 @@ extern "C" int msc_rules_add_remote(Rules *rules,
 
 extern "C" int msc_rules_add_file(Rules *rules, const char *file,
     const char **error) {
+    /* 加载规则 */
     int ret = rules->loadFromUri(file);
     if (ret < 0) {
         *error = strdup(rules->getParserError().c_str());

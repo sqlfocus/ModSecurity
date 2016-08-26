@@ -31,11 +31,13 @@ namespace modsecurity {
 /** @ingroup ModSecurity_CPP_API */
 class UniqueId {
  public:
+    /* 单例模式 */
     static UniqueId& getInstance() {
         static UniqueId instance;
         return instance;
     }
 
+    /* 由MAC＋主机名通过SHA1计算数字签名，做为唯一标识字符串 */
     static std::string uniqueId() {
         if (UniqueId::getInstance().uniqueId_str.empty()) {
             UniqueId::getInstance().fillUniqueId();

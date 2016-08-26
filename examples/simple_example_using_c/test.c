@@ -30,13 +30,17 @@ int main (int argc, char **argv)
     Transaction *transaction = NULL;
     Rules *rules = NULL;
 
+    /* 初始化安全模块儿 */
     modsec = msc_init();
 
+    /* 初始化连接适配器说明，便于日志调试 */
     msc_set_connector_info(modsec, "ModSecurity-test v0.0.1-alpha (Simple " \
         "example on how to use ModSecurity API");
 
+    /* 创建规则集容器 */
     rules = msc_create_rules_set();
 
+    /* 利用本地规则文件填充规则集 */
     ret = msc_rules_add_file(rules, main_rule_uri, &error);
     if (ret < 0) {
         fprintf(stderr, "Problems loading the rules --\n");
@@ -45,6 +49,7 @@ int main (int argc, char **argv)
     }
     msc_rules_dump(rules);
 
+    /* 加载远端规则 */
     ret = msc_rules_add_remote(rules, "test",
         "https://www.modsecurity.org/modsecurity-regression-test-secremoterules.txt",
         &error);
@@ -55,8 +60,10 @@ int main (int argc, char **argv)
     }
     msc_rules_dump(rules);
 
+    /* 开始新事务，一般对应一条流 */
     transaction = msc_new_transaction(modsec, rules, NULL);
 
+    /* 根据阶段（共7阶段）调用对应的处理函数 */
     msc_process_connection(transaction, "127.0.0.1", 12345, "127.0.0.1", 80);
     msc_process_uri(transaction,
         "http://www.modsecurity.org/test?key1=value1&key2=value2&key3=value3",
@@ -66,7 +73,8 @@ int main (int argc, char **argv)
     msc_process_response_headers(transaction, 200, "HTTP 1.3");
     msc_process_response_body(transaction);
     msc_process_logging(transaction);
-end:
+    
+end:/* 进程结束，释放占用的资源 */
     msc_rules_cleanup(rules);
     msc_cleanup(modsec);
 

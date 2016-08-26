@@ -104,15 +104,17 @@ class RulesProperties {
     ~RulesProperties() {
         delete m_debugLog;
     }
-
-    std::vector<Rule *> rules[7];
+    
+    /* 对应不同阶段的规则数组 */
+    std::vector<Rule *> rules[7];    
     std::vector<Rule *> * getRulesForPhase(int phase) {
         if (phase > 7) {
             return NULL;
         }
         return &rules[phase];
     }
-
+跑
+    /* 对应不同阶段的默认动作数组 */
     //  ModSecurity::Phases::NUMBER_OF_PHASES
     std::vector<actions::Action *> defaultActions[7];
     //  ModSecurity::Phases::NUMBER_OF_PHASES
@@ -121,24 +123,24 @@ class RulesProperties {
      *
      * The RuleEngine enumerator consists in mapping the different states
      * of the rule engine.
-     *
+     * 规则引擎状态配置你
      */
     enum RuleEngine {
     /**
      *
      * Rules won't be evaluated if Rule Engine is set to DisabledRuleEngine
-     *
+     * 关闭，不执行规则引擎
      */
      DisabledRuleEngine,
     /**
      *
      * Rules will be evaluated and disturb actions will take place if needed.
-     *
+     * 执行规则引擎，并执行对应的规则动作
      */
      EnabledRuleEngine,
     /**
      * Rules will be evaluated but it won't generate any disruptive action.
-     *
+     * 仅执行规则引擎，不执行后续动作
      */
      DetectionOnlyRuleEngine
     };
@@ -147,19 +149,19 @@ class RulesProperties {
      *
      * Defines what actions should be taken in case the body (response or
      * request) is bigger than the expected size.
-     *
+     * 当请求体、或应答体大于配置参数时，应该采取的动作
      */
     enum BodyLimitAction {
     /**
      *
      * Process partial
-     *
+     * 部分处理
      */
      ProcessPartialBodyLimitAction,
     /**
      *
      * Reject the request
-     *
+     * 阻断请求
      */
      RejectBodyLimitAction
     };
@@ -170,19 +172,19 @@ class RulesProperties {
      * Defines what actions should be taken in case the remote rules failed to
      * be downloaded (independent of the circumstances)
      * 
-     *
+     * 当远程规则下载失败后，应该采取的动作
      */
     enum OnFailedRemoteRulesAction {
     /**
      *
      * Abort
-     *
+     * 中断并退出程序
      */
      AbortOnFailedRemoteRulesAction,
     /**
      *
      * Warn on logging
-     *
+     * 警告日志
      */
      WarnOnFailedRemoteRulesAction
     };

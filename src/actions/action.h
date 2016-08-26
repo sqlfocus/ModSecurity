@@ -105,6 +105,7 @@ class Action {
      * Action that are executed while loading the configuration. For instance
      * the rule ID or the rule phase.
      *
+     * 当加载配置时，执行的动作
      */
      ConfigurationKind,
     /**
@@ -112,7 +113,7 @@ class Action {
      * Those are actions that demands to be executed before call the operator.
      * For instance the tranformations.
      *
-     *
+     * 在执行operator之前，需要执行的动作；如，各种变换
      */
      RunTimeBeforeMatchAttemptKind,
     /**
@@ -121,6 +122,7 @@ class Action {
      * the operator returned Match (or True). For instance the disruptive
      * actions.
      *
+     * 在operator之后执行的动作，仅当operator匹配后才执行；如，破坏性行为
      */
      RunTimeOnlyIfMatchKind,
     };

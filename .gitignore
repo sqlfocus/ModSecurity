@@ -1,3 +1,9 @@
+GPATH
+GSYMS
+GTAGS
+GRTAGS
+*.~undo-tree~
+*~
 *.o
 *.lo
 *.la

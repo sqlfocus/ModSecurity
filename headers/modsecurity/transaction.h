@@ -85,6 +85,7 @@ class Operator;
 
 
 /** @ingroup ModSecurity_CPP_API */
+/* 事务，以用户请求为粒度 */
 class Transaction {
  public:
     Transaction(ModSecurity *transaction, Rules *rules, void *logCbData);
@@ -99,6 +100,7 @@ class Transaction {
     /**
      * Types of request body that ModSecurity may give a special treatment
      * for the data.
+     * 可能需要ModSecurity模块儿特殊对待的请求体数据类型
      */
     enum RequestBodyType {
       /**
@@ -296,6 +298,7 @@ class Transaction {
     /**
      * Contains the unique ID of the transaction. Use by the variable
 	 * `UNIQUE_ID'. This unique id is also saved as part of the AuditLog.
+     * 事务唯一性标识，由 ‘时间戳+(0~100)随机数’构成
      */
     std::string m_id;
 
@@ -339,6 +342,8 @@ class Transaction {
 
     /**
      * Holds all the collections related to that transaction.
+     * 保存事务相关等信息；如，保存五元组等信息，key分别为REMOTE_HOST/
+     * REMOTE_ADDR/SERVER_ADDR/SERVER_PORT/REMOTE_PORT/UNIQUE_ID
      */
     collection::Collections m_collections;
 

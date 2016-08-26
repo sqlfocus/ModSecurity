@@ -42,6 +42,7 @@ class Driver;
 }
 
 /** @ingroup ModSecurity_CPP_API */
+/* 盛放规则集容器类 */
 class Rules : public RulesProperties  {
  public:
     Rules()

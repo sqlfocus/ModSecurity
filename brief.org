@@ -1,0 +1,35 @@
+#+TITLE: libmodsecurity分支简述
+#+AUTHOR: sqlfocus
+
+* TODO 编译
+
+* 重要类和结构定义
+   - class ModSecurity
+          : 安全模块儿类，~/headers/modsecurity/modsecurity.h
+          : 定义了安全模块儿的处理阶段，enum Phases
+   - class Rules
+          : 盛放安全规则的容器，~/headers/modsecurity/rules.h
+          : 盛放匹配规则后对应的动作
+          : 
+   - class transaction
+          : 以用户请求为粒度的事务类，~/headers/modsecurity/transaction.h
+          : 存放用户请求及应答的所有状态信息
+          :
+
+
+* 代码入口
+   - msc_init()                 :: C语言初始化ModSecurity的接口
+   - msc_create_rules_set()     :: 创建规则集容器
+   - msc_rules_add_file()       :: 利用本地规则文件填充规则集
+   - msc_rules_add_remote()     :: 加载远端规则文件
+   - msc_new_transaction()      :: 新建事务，以流为粒度处理HTTP请求
+   - msc_process_connection()   :: 对应阶段ModSecurity::Phases::ConnectionPhase
+   - msc_process_uri()          :: UriPhase
+   - msc_process_request_headers()   :: RequestHeadersPhase
+   - msc_process_request_body() :: RequestBodyPhase
+   - msc_process_response_headers()  :: ResponseHeadersPhase
+   - msc_process_response_body()     :: ResponseBodyPhase
+   - msc_process_logging()      :: LoggingPhase
+
+
+

@@ -143,6 +143,7 @@ int Driver::parseFile(const std::string &f) {
     std::ifstream t(f);
     std::string str;
 
+    /* 读取文件到内存 */
     if (t.is_open() == false) {
         parserError << "Failed to open the file: " << f << std::endl;
         return false;
@@ -155,6 +156,7 @@ int Driver::parseFile(const std::string &f) {
     str.assign((std::istreambuf_iterator<char>(t)),
         std::istreambuf_iterator<char>());
 
+    /* 解析 */
     return parse(str, f);
 }
 

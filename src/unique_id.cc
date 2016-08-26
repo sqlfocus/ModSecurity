@@ -60,11 +60,13 @@ void UniqueId::fillUniqueId() {
     std::string name;
     std::string data;
 
+    /* 获取设备MAC地址，主机名；并利用此构建设备唯一标识 */
     macAddress = ethernetMacAddress();
     name = machineName();
 
     data = macAddress + name;
 
+    /* 利用SHA1计算数字签名 */
     this->uniqueId_str = Utils::Sha1::hexdigest(data);
 }
 

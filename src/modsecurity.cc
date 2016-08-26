@@ -61,8 +61,8 @@ ModSecurity::ModSecurity()
     m_user_collection(new collection::backend::InMemoryPerProcess()),
 #endif
     m_logCb(NULL) {
-    UniqueId::uniqueId();
-    srand(time(NULL));
+    UniqueId::uniqueId();               /* 计算设备唯一标识 */
+    srand(time(NULL));                  /* 计算随机数种子 */
 #ifdef MSC_WITH_CURL
     curl_global_init(CURL_GLOBAL_ALL);
 #endif
@@ -256,6 +256,7 @@ extern "C" void msc_cleanup(ModSecurity *msc) {
  * @endcode
  */
 extern "C" ModSecurity *msc_init() {
+    /* 初始化安全模块儿 */
     ModSecurity *modsec = new ModSecurity();
 
     return modsec;

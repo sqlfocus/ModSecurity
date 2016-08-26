@@ -214,6 +214,7 @@ void Transaction::debug(int level, std::string message) {
  * @retval true Operation was successful.
  * @retval false Operation failed.
  *
+ * 对应处理阶段1, ModSecurity::Phases::ConnectionPhase
  */
 int Transaction::processConnection(const char *client, int cPort,
     const char *server, int sPort) {
@@ -226,6 +227,7 @@ int Transaction::processConnection(const char *client, int cPort,
     debug(4, "Starting phase CONNECTION. (SecRules 0)");
 #endif
 
+    /* 存储五元组 */
     this->m_collections.store("REMOTE_HOST", m_clientIpAddress);
     this->m_collections.store("UNIQUE_ID", m_id);
     this->m_collections.store("REMOTE_ADDR", m_clientIpAddress);
@@ -234,6 +236,7 @@ int Transaction::processConnection(const char *client, int cPort,
         std::to_string(this->m_serverPort));
     this->m_collections.store("REMOTE_PORT",
         std::to_string(this->m_clientPort));
+    /* 执行本阶段的规则 */
     this->m_rules->evaluate(ModSecurity::ConnectionPhase, this);
     return true;
 }
@@ -1594,6 +1597,8 @@ void Transaction::serverLog(const std::string& msg) {
  *              problems with the ModSecurity core or missing memory to
  *              allocate the resources needed by the transaction.
  *
+ * 利用给定的配置及规则集，创建一个新事务；事务用来检测请求，保存请求的所有
+ * 信息
  */
 extern "C" Transaction *msc_new_transaction(ModSecurity *ms,
     Rules *rules, void *logCbData) {
@@ -1624,6 +1629,7 @@ extern "C" Transaction *msc_new_transaction(ModSecurity *ms,
  */
 extern "C" int msc_process_connection(Transaction *transaction,
     const char *client, int cPort, const char *server, int sPort) {
+    /* 建立连接后，随后执行此函数 */
     return transaction->processConnection(client, cPort, server, sPort);
 }
 

@@ -49,7 +49,7 @@ class Driver;
 typedef struct Driver_t Driver;
 #endif
 
-
+/* 安全规则解析引擎 */
 class Driver : public RulesProperties {
  public:
     Driver();

@@ -135,6 +135,7 @@ class Operators;
 class Rule;
 
 /** @ingroup ModSecurity_CPP_API */
+/* 安全模块儿的类定义 */
 class ModSecurity {
  public:
     ModSecurity();
@@ -155,7 +156,12 @@ class ModSecurity {
      *
      * It is mandatory to call all the phases, even if you don't have this
      * phases segmented in your end.
-     *
+     * 
+     * Phases枚举定义了请求处理的不同阶段，ModSecurity模块儿基于这些阶段检查
+     * 数据。如果对接的引擎，处理请求的顺序和此处定义不一致，很可能导致ModS
+     * 发生不可预期的异常。
+     * 
+     * 注意，这些阶段是被强制顺序处理的
      */
     enum Phases {
     /**
@@ -165,6 +171,7 @@ class ModSecurity {
      * resolved. This phase is expected to happen immediately after a
      * connection is established.
      *
+     * 此阶段发生在链接刚刚建立之初，虚拟主机名还没有解析之前
      */
      ConnectionPhase,
     /**
@@ -173,6 +180,7 @@ class ModSecurity {
      * application that you may use with ModSecurity) have the acknowledgement
      * of the full request URI.
      *
+     * 当对应当服务器引擎已经拿到了全量当请求URI后，进行此阶段处理
      */
      UriPhase,
     /**
@@ -181,6 +189,7 @@ class ModSecurity {
      * information about the headers. Notice however, that it is expected to
      * happen prior to the reception of the request body (if any).
      *
+     * 当头部信息解析完毕后，请求体解析前
      */
      RequestHeadersPhase,
     /**
@@ -191,6 +200,8 @@ class ModSecurity {
      * ModSecurity can ask the webserver to block (or make any other disruptive
      * action) while the client is still transmitting the data.
      *
+     * 请求体开始传输时，进行流式检测处理；再‘处理请求头’阶段，有可能检测请
+     * 求体，不过是在接收了所有的请求体之后才行
      */
      RequestBodyPhase,
     /**
@@ -198,6 +209,7 @@ class ModSecurity {
      * The "ResponseHeaders" happens just before all the response headers are
      * ready to be delivery to the client.
      *
+     * 在所有当回应头准备发送给客户端前
      */
      ResponseHeadersPhase,
     /**
@@ -205,6 +217,7 @@ class ModSecurity {
      * Same as "RequestBody" the "ResponseBody" phase perform a stream
      * inspection which may result in a disruptive action.
      *
+     * 流式检测，可能导致破坏性的动作行为
      */
      ResponseBodyPhase,
     /**
@@ -213,15 +226,18 @@ class ModSecurity {
      * generate the internal logs, there is no need to hold the request at
      * this point as this phase does not produce any kind of action.
      *
+     * 日志阶段，此后不必再保留请求
      */
      LoggingPhase,
     /**
      * Just a marking for the expected number of phases.
      * 
+     * 处理阶段的结束标识
      */
      NUMBER_OF_PHASES,
     };
 
+    /* 存储结构 */
     collection::Collection *m_global_collection;
     collection::Collection *m_resource_collection;
     collection::Collection *m_ip_collection;
@@ -229,7 +245,8 @@ class ModSecurity {
     collection::Collection *m_user_collection;
 
  private:
-    std::string m_connector;
+    std::string m_connector;   /* connector，连接本库的适配器的简单说明，
+                                  用于日志输出，便于分辨适配器 */
     LogCb m_logCb;
 };
 
