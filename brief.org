@@ -31,5 +31,7 @@
    - msc_process_response_body()     :: ResponseBodyPhase
    - msc_process_logging()      :: LoggingPhase
 
-
+* 示例代码
+参考~/examples/simple_example_using_c/test.c，此案例利用c语言写成，概述了
+基本的处理流程；通过此案例，可以了基本解适配器的处理流程。
 
