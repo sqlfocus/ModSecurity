@@ -23,6 +23,20 @@ useful；为此，spiderlabs提供了免费的规则集。
    - 监控应用          :: 防止错误配置
    - 监控错误          :: 分析服务器等错误信息
 
+* libmodsecurity分支
+此分支为Modscurity v3项目的组成部分，不再提供类似老版本的模块儿逻辑，和
+web引擎apache、nginx、iis等不再一块儿打包发布。此分支提供的代码被连接器
+消费，连接器（connector）将和web引擎对接，做为此分支的适配层，屏蔽不同
+引擎的差异，为安全业务提供统一的底层抽象。
+
+目前，已知的适配器有ModSecurity-nginx，为nginx引擎提供抽象适配。
+
+安全功能单独以库的形式提供，有不少好处：
+  - 移除了原来的apache依赖[fn:1]
+  - 更高的性能
+  - 新特性
+  - 新架构
+
 * TODO 核心规则集CRS
 此安全模块儿的核心规则集来自OWASP
    - [[https://www.owasp.org/index.php/Category:OWASP_ModSecurity_Core_Rule_Set_Project][网站地址]]
@@ -38,5 +52,8 @@ useful；为此，spiderlabs提供了免费的规则集。
    - local file include
    - remote file include
 
+
+
+[fn:1]ModSecurity原来是apache的一个模块儿
 
 
