@@ -1,7 +1,22 @@
 #+TITLE: libmodsecurity分支简述
 #+AUTHOR: sqlfocus
 
-* TODO 编译
+* TODO 编译流程
+
+* DONE 规则
+  CLOSED: [2016-09-01 Thu 11:46]
+  - CLOSING NOTE [2016-09-01 Thu 11:46] \\
+    经过一周的奋战，终于大略了解略flex和bison；不过对于c++的支持，还不甚了了，
+    期待有机会更进一步！！！
+    
+    这次主要参考了《flex and bison》，后续可参考它们的官网。
+
+利用flex和bison自动生成规则解释器，并被外围代码调用，以糅合到整个程序中；
+此方法值得借鉴，用于配置文件解析等场合。
+
+以安全规则为例， [[modsec_rule.org]] 概述了从配置文件到程序内存的流程。
+
+参考书籍，[[flex与bison]]
 
 * 重要类和结构定义
    - class ModSecurity
@@ -10,11 +25,9 @@
    - class Rules
           : 盛放安全规则的容器，~/headers/modsecurity/rules.h
           : 盛放匹配规则后对应的动作
-          : 
    - class transaction
           : 以用户请求为粒度的事务类，~/headers/modsecurity/transaction.h
           : 存放用户请求及应答的所有状态信息
-          :
 
 
 * 代码入口

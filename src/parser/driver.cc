@@ -123,10 +123,10 @@ int Driver::parse(const std::string &f, const std::string &ref) {
     }
 
     buffer = f;
-    scan_begin();
-    yy::seclang_parser parser(*this);
+    scan_begin();        /* 切换flex输入源为buffer，参考seclang-scanner.ll */
+    yy::seclang_parser parser(*this);       /* 初始化语法解析器 */
     parser.set_debug_level(trace_parsing);
-    int res = parser.parse();
+    int res = parser.parse();               /* 启动语法解析器 */
     scan_end();
 
     if (audit_log->init() == false) {

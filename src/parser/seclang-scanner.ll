@@ -1,3 +1,4 @@
+/* 词法解析器定义文件 */
 %{ /* -*- C++ -*- */
 #include <cerrno>
 #include <climits>
@@ -194,6 +195,7 @@ SOMETHING ["]{1}([^"]|([^\\"]\\\"))*["]{1}
 
 CONFIG_DIR_UNICODE_MAP_FILE (?i:SecUnicodeMapFile)
 
+/* 定义起始状态 */
 %x EXPECTING_OPERATOR COMMENT EXPECTING_VARIABLE
 
 %{
@@ -555,6 +557,7 @@ CONFIG_DIR_UNICODE_MAP_FILE (?i:SecUnicodeMapFile)
 
 namespace modsecurity {
 
+/* 词法解析器开始扫瞄 */
 bool Driver::scan_begin () {
     yy_flex_debug = trace_scanning;
 
@@ -565,6 +568,7 @@ bool Driver::scan_begin () {
     return false;
 }
 
+/* 词法解析器结束扫瞄 */
 void Driver::scan_end () {
     yylex_destroy();
     BEGIN(INITIAL);

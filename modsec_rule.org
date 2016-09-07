@@ -1,0 +1,85 @@
+#+TITLE: 配置规则解析流程概述
+#+AUTHOR: sqlfocus
+
+本文档摘录ModSecurity的配置文件的解析流程，以期能够从总体上了解开源
+WAF的安全规则语言，为后续自己设计WAF产品提供技术积累。
+
+* 简介
+本开源中，安全规则采用自身设定的语言，可参考示例配置文件~/examples/simple_
+example_using_c/basic_rules.conf，并利用flex和bison解析配置文件。
+
+*** 示例
+SecRule REQUEST_HEADERS:Content-Type "application/json" \
+     "id:'200001',phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=JSON"
+
+*** 解析器文件
+  - 词法解析器文件  :: ~/src/parser/seclang-scanner.ll
+  - 语法解析器文件  :: ~/src/parser/seclang-parser.yy
+
+*** 参考
+  [[http://www.tanjiti.com/modsecurity_crs.html][规则分类介绍]]
+
+* 程序流程
+大程序流程，代码导读框架如下：
+   #+BEGIN_EXAMPLE
+   -- main()
+       -- msc_rules_add_file()                     ~/src/rules.cc
+           -- Rules::loadFromUri()
+               -- Driver::parseFile()              ~/src/parser/driver.cc
+                   -- Driver::parse()
+                       -- scan_begin()                 设置词法解析器的输入缓存
+                                                         定义在seclang-scanner.ll
+                       -- yy::seclang_parser.parse()   解析安全规则，
+                                                         定义在seclang-parser.ll
+                       -- scan_end()
+   #+END_EXAMPLE
+
+*** flex词法解析流程
+参考文件seclang-scanner.ll
+  - 定义关键字
+      : DIRECTIVE       (?i:SecRule)
+  - 词法规则
+      : {DIRECTIVE}     { return yy::seclang_parser::make_DIRECTIVE(yytext, *driver.loc.back()); }
+
+*** bison语法解析流程
+参考文件seclang-parser.yy
+  - 定义关键字类型
+      : %token <std::string> DIRECTIVE
+  - 定义关键字规则
+      : ...
+      : expression:
+      :    audit_log
+      :    | DIRECTIVE variables op actings
+      :    {
+      :       Rule *rule = new Rule(
+      :           /* op */ $3,
+      :           /* variables */ $2,
+      :           /* actions */ $4,
+      :           /* file name */ driver.ref.back(),
+      :           /* line number */ @0.end.line
+      :       );
+      :
+      :       if (driver.addSecRule(rule) == false) {
+      :            YYERROR;
+      :       }
+      :    }
+      :    | DIRECTIVE variables op
+      :    {
+      :       Rule *rule = new Rule(
+      :           /* op */ $3,
+      :           /* variables */ $2,
+      :           /* actions */ NULL,
+      :           /* file name */ driver.ref.back(),
+      :           /* line number */ @0.end.line
+      :       );
+      :
+      :       if (driver.addSecRule(rule) == false) {
+      :           YYERROR;
+      :       }
+      :    }
+      : ...
+
+
+
+
+

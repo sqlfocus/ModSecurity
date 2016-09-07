@@ -113,7 +113,7 @@ class RulesProperties {
         }
         return &rules[phase];
     }
-跑
+
     /* 对应不同阶段的默认动作数组 */
     //  ModSecurity::Phases::NUMBER_OF_PHASES
     std::vector<actions::Action *> defaultActions[7];

@@ -34,7 +34,7 @@
 using modsecurity::Rule;
 using modsecurity::Rules;
 
-
+/* 重定义yylex（词法解析器的入口函数），添加参数 */
 # define YY_DECL \
   yy::seclang_parser::symbol_type yylex(modsecurity::Parser::Driver& driver)
 
