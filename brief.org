@@ -37,7 +37,8 @@ web引擎apache、nginx、iis等不再一块儿打包发布。此分支提供的
   - 新特性
   - 新架构
 
-* TODO 核心规则集CRS
+* DONE 核心规则集CRS
+  CLOSED: [2016-12-02 Fri 09:21]
 此安全模块儿的核心规则集来自OWASP
    - [[https://www.owasp.org/index.php/Category:OWASP_ModSecurity_Core_Rule_Set_Project][网站地址]]
    - [[https://github.com/SpiderLabs/owasp-modsecurity-crs][下载地址]]
@@ -52,8 +53,7 @@ web引擎apache、nginx、iis等不再一块儿打包发布。此分支提供的
    - local file include
    - remote file include
 
-
-
+* 备注
 [fn:1]ModSecurity原来是apache的一个模块儿
 
 
